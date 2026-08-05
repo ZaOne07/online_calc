@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
-public class Client {
+public class Client { // everything is pretty obvious here
     public static void main(String[] args) throws Exception{
         HttpClient client = HttpClient.newHttpClient();
 
