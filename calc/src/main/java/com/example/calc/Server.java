@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @SpringBootApplication
 @RestController
 public class Server {
   static String response;
     public static void main(String[] args) {
-      accept("123-456");
-      System.out.println(response);
       SpringApplication.run(Server.class, args);
     }
 
     @PostMapping("/calc")
-    public static void accept(@RequestBody String val) {
+    public static void acceptServer(@RequestBody String val) {
       val = val.strip();
       String[] nums = new String[2];
       Arrays.fill(nums, "");
@@ -90,5 +90,7 @@ public class Server {
       return num;
     }
 
+    @GetMapping("/calc")
+    public String sendServer() { return response; }
     
 }
