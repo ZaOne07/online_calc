@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
-public class Client { // everything is pretty obvious here
+public class Client {
     public static void main(String[] args) throws Exception{
         HttpClient client = HttpClient.newHttpClient();
 
@@ -18,7 +18,7 @@ public class Client { // everything is pretty obvious here
         }
     }
 
-    public static void sendClient(String expression, HttpClient client) throws Exception{
+    private static void sendClient(String expression, HttpClient client) throws Exception{
         HttpRequest post = HttpRequest.newBuilder()
         .uri(URI.create("http://localhost:8080/calc"))
         .header("Content-Type", "text/plain")
@@ -28,7 +28,7 @@ public class Client { // everything is pretty obvious here
         client.send(post, HttpResponse.BodyHandlers.ofString());
     }
 
-    public static void acceptClient(HttpClient client) throws Exception{
+    private static void acceptClient(HttpClient client) throws Exception{
         HttpRequest get = HttpRequest.newBuilder()
         .uri(URI.create("http://localhost:8080/calc"))
         .header("Content-Type", "text/plain")
