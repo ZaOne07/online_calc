@@ -1,8 +1,8 @@
-package com.example.calc;
+package com.example.calc.service;
 
 import java.util.Stack;
-
 import org.springframework.stereotype.Service;
+import com.example.calc.dto.ResponseDTO;
 
 @Service
 public class CalculatorService {
@@ -30,14 +30,19 @@ public class CalculatorService {
 
         for (int i = 0 ; i < expression.length() ; i++) {
             char ch = expression.charAt(i);
-            if (ch == ' ') continue;
-            else if (Character.isDigit(ch) || (ch == '-' && i == 0) || (ch == '.' && !num.isEmpty())) num = num + ch;
+            if (ch == ' ') {
+                if (!num.isEmpty() && Character.isDigit(expression.charAt(i + 1))) return "Invalid number format";
+                continue;
+            }
+            else if (Character.isDigit(ch) || (ch == '-' && i == 0)) num = num + ch;
+            
             else if (ch == '.') {
                 if (num.contains(".")) return "Invalid number format";
-                if (num.isEmpty()) num = "0"; // Support ".5" as "0.5"
+                if (num.isEmpty()) num = "0";
                 num = num + ch;
             }
-            else if (isOperator(ch) && !num.isEmpty()) {
+            else if (isOperator(ch)) {
+                if (num.isEmpty()) return "Illegal symbol placement";
                 numStack.push(Double.parseDouble(num));
                 num = "";
             
@@ -55,6 +60,7 @@ public class CalculatorService {
             return "No number found"; // return error if no number is found
         }
 
+        if (opStack.isEmpty()) return "Invalid expression";
         while (!opStack.isEmpty()) { // perform all remaining operations
             String error = calculate(numStack, opStack);
             if (error != null) return error;
@@ -106,7 +112,7 @@ public class CalculatorService {
                 }
                 numStack.push(divnd / divr);
                 break;
-            default: // return error is operator is inexpressionid
+            default: // return error is operator is invalid
                 return "Unknown operator - " + sign;
         }
         return null;
